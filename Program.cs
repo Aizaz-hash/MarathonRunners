@@ -1,16 +1,26 @@
 using Marathonrunner.Data;
+using Marathonrunner.Helpers;
 using Marathonrunner.Interfaces;
 using Marathonrunner.Repository;
+using Marathonrunner.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Add services to the container.
+// Add services to the controllers.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<Seed>();
+
+//local db services
 builder.Services.AddScoped<IClubRepository, ClubRespository>();
 builder.Services.AddScoped<IRaceRepository, RaceRepository>();
+builder.Services.AddScoped<IPhotoService ,  PhotoService>();
+
+//cloud photo uplaoding to cloudaniry
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
+//data context
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConenction")));
 

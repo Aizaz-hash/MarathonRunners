@@ -1,6 +1,7 @@
 ﻿using Marathonrunner.Data;
 using Marathonrunner.Interfaces;
 using Marathonrunner.Models;
+using Marathonrunner.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -10,10 +11,12 @@ namespace Marathonrunner.Controllers
     public class ClubController : Controller
     {
         private readonly IClubRepository _clubRepository;
+        private readonly IPhotoService _photoService;
 
-        public ClubController(DataContext context  , IClubRepository clubRepository)
+        public ClubController(DataContext context  , IClubRepository clubRepository , IPhotoService photoService)
         {
             _clubRepository = clubRepository;
+            _photoService = photoService;
         }
 
         public async Task<IActionResult> Index()
@@ -39,15 +42,35 @@ namespace Marathonrunner.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Create(Club club)
+        public async Task<IActionResult> Create(CreateClubViewModel clubVM)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(club);
-            }
-            _clubRepository.AddClub(club);
+                var result = await _photoService.UploadImageAsync(clubVM.Image);
+                var club = new Club
+                {
 
-            return RedirectToAction("Index");
+                    Title = clubVM.Title,
+                    Description = clubVM.Description,
+                    Image = result.Url.ToString(),
+                    Address = new Address
+                    {
+                        city = clubVM.Address.city,
+                        state = clubVM.Address.state,
+                        street=clubVM.Address.street
+                    }
+                };
+                _clubRepository.AddClub(club);
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                ModelState.AddModelError("", "Photo Upload failed !");
+            }
+
+            return View(clubVM);
+
         }
 
     }

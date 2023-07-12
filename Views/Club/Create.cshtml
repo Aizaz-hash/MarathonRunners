@@ -1,5 +1,6 @@
 ﻿@using Marathonrunner.Data.Enum;
-@model Club;
+@using Marathonrunner.ViewModels;
+@model CreateClubViewModel;
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -7,7 +8,7 @@
 @{
 }
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Title">Title</label>
         <input asp-for="Title" class="form-control" placeholder="Enter Title">
@@ -20,13 +21,6 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Image">Image</label>
-        <input asp-for="Image" class="form-control" placeholder="Upload Image">
-        <span asp-validation-for="Image" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
         <label asp-for="clubCategory">Club Category</label>
         <select asp-for="clubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" >
 
@@ -34,7 +28,6 @@
 
         </select>
     </div>
-
 
         <div class="form-group">
         <label asp-for="Address.state">State</label>
@@ -51,6 +44,13 @@
         <input asp-for="Address.street" class="form-control" placeholder="Enter Street">
         <span asp-validation-for="Address.street" class="text-danger"></span>
     </div>
+
+    <div class="form-group">
+        <label asp-for="Image">Image</label>
+        <input asp-for="Image" type="file" class="form-control" placeholder="Upload Image">
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
 
 
 

@@ -265,3 +265,4 @@ D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\unix\lib\net6.
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\CloudinaryDotNet.dll
