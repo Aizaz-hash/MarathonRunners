@@ -1,4 +1,6 @@
 using Marathonrunner.Data;
+using Marathonrunner.Interfaces;
+using Marathonrunner.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<Seed>();
-
+builder.Services.AddScoped<IClubRepository, ClubRespository>();
+builder.Services.AddScoped<IRaceRepository, RaceRepository>();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConenction")));
 

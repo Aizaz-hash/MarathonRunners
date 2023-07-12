@@ -1,4 +1,5 @@
 ﻿using Marathonrunner.Data;
+using Marathonrunner.Interfaces;
 using Marathonrunner.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,21 +8,24 @@ namespace Marathonrunner.Controllers
 {
     public class RaceController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IRaceRepository _raceRepository;
 
-        public RaceController(DataContext context)
+        public RaceController(IRaceRepository raceRepository)
         {
-            _context = context;
+            _raceRepository = raceRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var races = _context.races.ToList();
+
+            IEnumerable<Races> races = await _raceRepository.GetAll();
+
             return View(races);
         }
 
-        public IActionResult Details(int id)
+
+        public async Task<IActionResult> Details(int id)
         {
-            Races race = _context.races.Include(a => a.Address).FirstOrDefault(r => r.Id == id);
+            Races race = await _raceRepository.GetByIdAsync(id);
 
             return View(race);
         }

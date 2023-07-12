@@ -1,31 +1,33 @@
 ﻿using Marathonrunner.Data;
+using Marathonrunner.Interfaces;
 using Marathonrunner.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace Marathonrunner.Controllers
 {
     public class ClubController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IClubRepository _clubRepository;
 
-        public ClubController(DataContext context)
+        public ClubController(DataContext context  , IClubRepository clubRepository)
         {
-            _context = context;
+            _clubRepository = clubRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            var clubs = _context.clubs.ToList();
+           IEnumerable<Club> clubs = await _clubRepository.GetAll();
 
             return View(clubs);
         }
 
 
-        public IActionResult Details(int id) 
+        public async Task<IActionResult> Details(int id) 
         {
-            Club club = _context.clubs.Include(a=>a.Address).FirstOrDefault(c => c.Id == id);
+            Club club = await _clubRepository.GetByIdAsync(id);
 
             return View(club);
         }
