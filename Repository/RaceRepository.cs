@@ -39,6 +39,10 @@ namespace Marathonrunner.Repository
             return await _context.races.Include(i => i.Address).FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<Races> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.races.Include(i => i.Address).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        }
 
         public async Task<IEnumerable<Races>> GetRaceByCategory(string category)
         {
@@ -60,7 +64,9 @@ namespace Marathonrunner.Repository
 
         public bool UpdateRace(Races race)
         {
-            throw new NotImplementedException();
+            _context.Update(race);
+
+            return Save();
         }
     }
 }

@@ -73,5 +73,77 @@ namespace Marathonrunner.Controllers
 
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var club = await _clubRepository.GetByIdAsync(id);
+
+            if (club == null)
+            {
+                return View("Error");
+            }
+
+
+            var ClubVM = new EditClubViewModel
+            {
+                Title = club.Title,
+                Description = club.Description,
+                AddressId = club.AddressId,
+                Address = club.Address,
+                URL = club.Image,
+                ClubCategory = club.clubCategory
+            };
+
+            return View(ClubVM);
+
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Edit (int id , EditClubViewModel clubVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to Edit Club");
+                return View("Edit" , clubVM);
+            
+            }
+
+            var userclub = await _clubRepository.GetByIdAsyncNoTracking(id);
+
+            if (userclub != null) 
+            {
+                try
+                {
+                    await _photoService.DeleteImageAsync(userclub.Image);
+
+                }
+
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Could not delete Photo");
+                    return View(clubVM);
+                }
+
+                var photoResult = await _photoService.UploadImageAsync(clubVM.Image);
+
+                var club = new Club
+                {
+                    Id = id,
+                    Title = clubVM.Title,
+                    Description = clubVM.Description,
+                    Image = photoResult.Url.ToString(),
+                    AddressId = clubVM.AddressId,
+                    Address = clubVM.Address
+                };
+
+                _clubRepository.UpdateClub(club);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(clubVM);
+            }
+        }
+
     }
 }

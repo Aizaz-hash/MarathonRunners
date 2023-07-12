@@ -6,6 +6,7 @@ namespace Marathonrunner.Interfaces
     {
         Task<IEnumerable<Races>> GetAll();
         Task<Races> GetByIdAsync(int id);
+        Task<Races> GetByIdAsyncNoTracking(int id);
 
         Task<IEnumerable<Races>> GetRaceByCategory(string category);
         Task<IEnumerable<Races>> GetRaceByCity(string city);
