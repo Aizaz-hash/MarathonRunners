@@ -1,6 +1,7 @@
 ﻿using Marathonrunner.Data;
 using Marathonrunner.Interfaces;
 using Marathonrunner.Models;
+using Marathonrunner.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,24 @@ namespace Marathonrunner.Controllers
             Races race = await _raceRepository.GetByIdAsync(id);
 
             return View(race);
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Create(Races race)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(race);
+            }
+            _raceRepository.AddRace(race);
+
+            return RedirectToAction("Index");
         }
     }
 }

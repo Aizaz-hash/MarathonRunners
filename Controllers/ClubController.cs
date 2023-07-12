@@ -32,5 +32,23 @@ namespace Marathonrunner.Controllers
             return View(club);
         }
 
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Create(Club club)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(club);
+            }
+            _clubRepository.AddClub(club);
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

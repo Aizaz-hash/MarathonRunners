@@ -1,0 +1,59 @@
+﻿@using Marathonrunner.Data.Enum;
+@model Club;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" placeholder="Enter Title">
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" class="form-control" placeholder="Enter Description">
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image">Image</label>
+        <input asp-for="Image" class="form-control" placeholder="Upload Image">
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="clubCategory">Club Category</label>
+        <select asp-for="clubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" >
+
+            <option>-Select-</option>
+
+        </select>
+    </div>
+
+
+        <div class="form-group">
+        <label asp-for="Address.state">State</label>
+        <input asp-for="Address.state" class="form-control" placeholder="Enter State">
+        <span asp-validation-for="Address.state" class="text-danger"></span>
+    </div>
+        <div class="form-group">
+        <label asp-for="Address.city">City</label>
+        <input asp-for="Address.city" class="form-control" placeholder="Enter City">
+        <span asp-validation-for="Address.city" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address.street">Street</label>
+        <input asp-for="Address.street" class="form-control" placeholder="Enter Street">
+        <span asp-validation-for="Address.street" class="text-danger"></span>
+    </div>
+
+
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
