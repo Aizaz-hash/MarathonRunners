@@ -5,10 +5,8 @@ using System.Diagnostics;
 
 namespace Marathonrunner.Models
 {
-    public class Users 
+    public class Users :IdentityUser
     {
-        [Key]
-        public string Id { get; set; }
         public int? Pace { get; set; }
         public int? Mileage { get; set; }
 

@@ -66,6 +66,7 @@ namespace Marathonrunner.Controllers
 
             else
             {
+                TempData["ClubError"] = "Cannot Edit Race , Please try Again";
                 ModelState.AddModelError("", "Photo Upload failed !");
             }
 
@@ -141,9 +142,38 @@ namespace Marathonrunner.Controllers
             }
             else
             {
+                TempData["ClubEditError"] = "Cannot Add new Club , Please try Again";
                 return View(clubVM);
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var clubDetails = await _clubRepository.GetByIdAsync(id);
+            if (clubDetails == null) return View("Error");
+            return View(clubDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteClub(int id)
+        {
+            var clubDetails = await _clubRepository.GetByIdAsync(id);
+
+            if (clubDetails == null)
+            {
+                return View("Error");
+            }
+
+            if (!string.IsNullOrEmpty(clubDetails.Image))
+            {
+                _ = _photoService.DeleteImageAsync(clubDetails.Image);
+            }
+
+            _clubRepository.DeleteClub(clubDetails);
+            return RedirectToAction("Index");
+        }
     }
+
+
 }

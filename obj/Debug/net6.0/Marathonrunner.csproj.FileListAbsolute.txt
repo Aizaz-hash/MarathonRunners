@@ -1,11 +1,3 @@
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.csproj.AssemblyReference.cache
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.GeneratedMSBuildEditorConfig.editorconfig
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.AssemblyInfoInputs.cache
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.AssemblyInfo.cs
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.csproj.CoreCompileInputs.cache
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.MvcApplicationPartsAssemblyInfo.cache
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.RazorAssemblyInfo.cache
-D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.RazorAssemblyInfo.cs
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\appsettings.Development.json
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\appsettings.json
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Marathonrunner.staticwebassets.runtime.json
@@ -20,6 +12,9 @@ D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\CloudinaryDotNet.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Humanizer.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\MessagePack.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\MessagePack.Annotations.dll
+D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Build.dll
@@ -47,6 +42,8 @@ D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.Co
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
@@ -250,6 +247,14 @@ D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\win\lib\netsta
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 D:\dotnet\Marathonrunner\Marathonrunner\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.csproj.AssemblyReference.cache
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.GeneratedMSBuildEditorConfig.editorconfig
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.AssemblyInfoInputs.cache
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.AssemblyInfo.cs
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.csproj.CoreCompileInputs.cache
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.MvcApplicationPartsAssemblyInfo.cache
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.RazorAssemblyInfo.cache
+D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\Marathonrunner.RazorAssemblyInfo.cs
 D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\staticwebassets\msbuild.Marathonrunner.Microsoft.AspNetCore.StaticWebAssets.props
 D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\staticwebassets\msbuild.build.Marathonrunner.props
 D:\dotnet\Marathonrunner\Marathonrunner\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.Marathonrunner.props

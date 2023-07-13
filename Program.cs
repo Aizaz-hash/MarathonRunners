@@ -1,9 +1,13 @@
 using Marathonrunner.Data;
 using Marathonrunner.Helpers;
 using Marathonrunner.Interfaces;
+using Marathonrunner.Models;
 using Marathonrunner.Repository;
 using Marathonrunner.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RunGroopWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +29,25 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConenction")));
 
 
+//identity setup
+builder.Services.AddIdentity<Users , IdentityRole>()
+    .AddEntityFrameworkStores<DataContext>();
+
+//memory cache
+builder.Services.AddMemoryCache();
+
+//sessions
+builder.Services.AddSession();
+
+//user authenticaton and cookie
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
 var app = builder.Build();
 
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
-    //await Seed.SeedUsersAndRolesAsync(app);
-    Seed.SeedData(app);
+    await Seed.SeedUsersAndRolesAsync(app);
+    //Seed.SeedData(app);
 }
 
 
