@@ -1,6 +1,7 @@
 ﻿using Marathonrunner.Data;
 using Marathonrunner.Interfaces;
 using Marathonrunner.Models;
+using Marathonrunner.Repository;
 using Marathonrunner.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace Marathonrunner.Controllers
     {
         private readonly IClubRepository _clubRepository;
         private readonly IPhotoService _photoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ClubController(DataContext context  , IClubRepository clubRepository , IPhotoService photoService)
+        public ClubController(IClubRepository clubRepository , IPhotoService photoService , IHttpContextAccessor httpContextAccessor)
         {
             _clubRepository = clubRepository;
             _photoService = photoService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -37,7 +40,12 @@ namespace Marathonrunner.Controllers
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            var curUserId = HttpContext.User.GetUserId();
+            var ClubVM =new CreateClubViewModel
+            {
+                userId = curUserId
+            };
+            return View(ClubVM);
         }
 
         [HttpPost]
@@ -49,10 +57,11 @@ namespace Marathonrunner.Controllers
                 var result = await _photoService.UploadImageAsync(clubVM.Image);
                 var club = new Club
                 {
-
                     Title = clubVM.Title,
                     Description = clubVM.Description,
                     Image = result.Url.ToString(),
+                    userId = clubVM.userId,
+                    clubCategory = clubVM.clubCategory,
                     Address = new Address
                     {
                         city = clubVM.Address.city,
@@ -61,12 +70,12 @@ namespace Marathonrunner.Controllers
                     }
                 };
                 _clubRepository.AddClub(club);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index" , "Dashboard");
             }
 
             else
             {
-                TempData["ClubError"] = "Cannot Edit Race , Please try Again";
+                TempData["ClubError"] = "Cannot Add Race , Please try Again";
                 ModelState.AddModelError("", "Photo Upload failed !");
             }
 
@@ -89,6 +98,7 @@ namespace Marathonrunner.Controllers
                 Title = club.Title,
                 Description = club.Description,
                 AddressId = club.AddressId,
+                userId = club.userId,
                 Address = club.Address,
                 URL = club.Image,
                 ClubCategory = club.clubCategory
@@ -100,18 +110,17 @@ namespace Marathonrunner.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Edit (int id , EditClubViewModel clubVM)
+        public async Task<IActionResult> Edit(int id , EditClubViewModel clubVM)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to Edit Club");
-                return View("Edit" , clubVM);
-            
+                ModelState.AddModelError("", "Failed to Edit Race");
+                return View("Edit", clubVM);
             }
 
             var userclub = await _clubRepository.GetByIdAsyncNoTracking(id);
 
-            if (userclub != null) 
+            if (userclub != null)
             {
                 try
                 {
@@ -121,7 +130,7 @@ namespace Marathonrunner.Controllers
 
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Could not delete Photo");
+                    ModelState.AddModelError("", "Could not delete Photo" + ex);
                     return View(clubVM);
                 }
 
@@ -133,16 +142,18 @@ namespace Marathonrunner.Controllers
                     Title = clubVM.Title,
                     Description = clubVM.Description,
                     Image = photoResult.Url.ToString(),
-                    AddressId = clubVM.AddressId,
-                    Address = clubVM.Address
+                    AddressId = Int32.Parse(clubVM.AddressId.ToString()),
+                    //(int)clubVM.AddressId,
+                    Address = clubVM.Address,
+                    userId = clubVM.userId
                 };
 
                 _clubRepository.UpdateClub(club);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
-                TempData["ClubEditError"] = "Cannot Add new Club , Please try Again";
+                TempData["RaceEditError"] = "Cannot Edit Race , Please try Again";
                 return View(clubVM);
             }
         }
@@ -171,7 +182,7 @@ namespace Marathonrunner.Controllers
             }
 
             _clubRepository.DeleteClub(clubDetails);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 

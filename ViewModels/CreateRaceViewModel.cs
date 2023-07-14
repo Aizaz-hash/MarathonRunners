@@ -18,5 +18,7 @@ namespace Marathonrunner.ViewModels
         public Address Address { get; set; }
 
         public RaceCategory raceCategory { get; set; }
+        public string? userId { get; set; }
+
     }
 }

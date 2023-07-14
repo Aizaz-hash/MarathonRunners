@@ -6,6 +6,8 @@ using Marathonrunner.Services;
 using Marathonrunner.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.Diagnostics;
 
 namespace Marathonrunner.Controllers
 {
@@ -13,8 +15,10 @@ namespace Marathonrunner.Controllers
     {
         private readonly IRaceRepository _raceRepository;
         private readonly IPhotoService _photoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RaceController(IRaceRepository raceRepository , IPhotoService photoService)
+
+        public RaceController(IRaceRepository raceRepository , IPhotoService photoService, IHttpContextAccessor httpContextAccessor)
         {
             _raceRepository = raceRepository;
             _photoService = photoService;
@@ -37,7 +41,12 @@ namespace Marathonrunner.Controllers
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            var curUserId = HttpContext.User.GetUserId();
+            var RaceVM = new CreateRaceViewModel
+            {
+                userId = curUserId
+            };
+            return View(RaceVM);
         }
 
         [HttpPost]
@@ -52,6 +61,8 @@ namespace Marathonrunner.Controllers
                     Title = raceVM.Title,
                     Description = raceVM.Description,
                     Image = result.Url.ToString(),
+                    //userId = raceVM.userId,
+                    raceCategory = raceVM.raceCategory,
                     Address = new Address
                     {
                         city = raceVM.Address.city,
@@ -60,7 +71,7 @@ namespace Marathonrunner.Controllers
                     }
                 };
                 _raceRepository.AddRace(race);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index" , "Dashboard");
             }
 
             else
@@ -76,6 +87,8 @@ namespace Marathonrunner.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
+            Debug.WriteLine("1");
+
             var race = await _raceRepository.GetByIdAsync(id);
 
             if (race == null)
@@ -83,45 +96,55 @@ namespace Marathonrunner.Controllers
                 return View("Error");
             }
 
+            Debug.WriteLine("2");
 
             var raceVM = new EditRaceViewModel
             {
+
                 Title = race.Title,
                 Description = race.Description,
                 AddressId = race.AddressId,
+                userId = race.userId,
                 Address = race.Address,
                 URL = race.Image,
-                raceCategory = race.raceCategory
+                RaceCategory = race.raceCategory
             };
+            Debug.WriteLine("3");
+
 
             return View(raceVM);
         }
 
 
-            [HttpPost]
-
+       [HttpPost]
         public async Task<IActionResult> Edit(int id, EditRaceViewModel raceVM)
         {
+            Debug.WriteLine("4");
+
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to Edit Club");
+                ModelState.AddModelError("", "Failed to Edit Race");
                 return View("Edit", raceVM);
 
             }
+            Debug.WriteLine("5");
 
-            var userclub = await _raceRepository.GetByIdAsyncNoTracking(id);
 
-            if (userclub != null)
+            var userRace = await _raceRepository.GetByIdAsyncNoTracking(id);
+
+            if (userRace != null)
             {
+                Debug.WriteLine("6");
+
                 try
                 {
-                    await _photoService.DeleteImageAsync(userclub.Image);
+                    await _photoService.DeleteImageAsync(userRace.Image);
 
                 }
 
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Could not delete Photo");
+                    ModelState.AddModelError("", "Could not delete Photo" + ex);
                     return View(raceVM);
                 }
 
@@ -133,14 +156,21 @@ namespace Marathonrunner.Controllers
                     Title = raceVM.Title,
                     Description = raceVM.Description,
                     Image = photoResult.Url.ToString(),
-                    AddressId = raceVM.AddressId,
-                    Address = raceVM.Address
+                    AddressId = (int)(raceVM.AddressId),
+                    Address = raceVM.Address,
+                    userId = raceVM.userId
                 };
 
+                Debug.WriteLine("7");
+
                 _raceRepository.UpdateRace(race);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Dashboard");
             }
+
+
             else
+                Debug.WriteLine("8");
+
             {
                 TempData["RaceEditError"] = "Cannot Edit Race , Please try Again";
                 return View(raceVM);
@@ -171,7 +201,7 @@ namespace Marathonrunner.Controllers
             }
 
             _raceRepository.DeleteRace(raceDetails);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }

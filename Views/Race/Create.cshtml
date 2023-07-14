@@ -9,6 +9,8 @@
 }
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
+    <input type="hidden" id="userId" name="userId" asp-for="userId" />
+
     @if (TempData["RaceError"] != null)
     {
         <div class="col-md-12 alert alert-danger">

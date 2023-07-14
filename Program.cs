@@ -20,6 +20,8 @@ builder.Services.AddTransient<Seed>();
 builder.Services.AddScoped<IClubRepository, ClubRespository>();
 builder.Services.AddScoped<IRaceRepository, RaceRepository>();
 builder.Services.AddScoped<IPhotoService ,  PhotoService>();
+builder.Services.AddScoped<IDashboardRespository ,  DashboardRespository>();
+builder.Services.AddScoped<IUserRepository ,  UserRepository>();
 
 //cloud photo uplaoding to cloudaniry
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
@@ -47,7 +49,7 @@ var app = builder.Build();
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
     await Seed.SeedUsersAndRolesAsync(app);
-    //Seed.SeedData(app);
+    Seed.SeedData(app);
 }
 
 
@@ -63,6 +65,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

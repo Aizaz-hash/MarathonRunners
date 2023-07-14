@@ -70,20 +70,17 @@ namespace Marathonrunner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("clubCategory")
                         .HasColumnType("int");
 
-                    b.Property<string>("usersId")
+                    b.Property<string>("userId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("usersId");
+                    b.HasIndex("userId");
 
                     b.ToTable("clubs");
                 });
@@ -343,13 +340,13 @@ namespace Marathonrunner.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Marathonrunner.Models.Users", "users")
+                    b.HasOne("Marathonrunner.Models.Users", "Users")
                         .WithMany("Clubs")
-                        .HasForeignKey("usersId");
+                        .HasForeignKey("userId");
 
                     b.Navigation("Address");
 
-                    b.Navigation("users");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Marathonrunner.Models.Races", b =>
