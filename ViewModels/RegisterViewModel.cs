@@ -19,6 +19,14 @@ namespace Marathonrunner.ViewModels
         [Compare("Password" , ErrorMessage ="Password doesnot match ! ")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "Enter Your city")]
+        [Required(ErrorMessage = "Confirm Password required")]
+        public string city { get; set; }
+
+        [Display(Name = "Enter Your State")]
+        [Required(ErrorMessage = "Confirm Password required")]
+        public string state { get; set; }
+
 
     }
 }

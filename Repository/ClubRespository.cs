@@ -44,7 +44,7 @@ namespace Marathonrunner.Repository
 
         public async Task<IEnumerable<Club>> GetClubByCity(string city)
         {
-            return await _context.clubs.Where(c=>c.Address.city.Contains(city)).ToListAsync();
+            return await _context.clubs.Where(c => c.Address.city.Contains(city)).Distinct().ToListAsync();
         }
 
         public bool Save()

@@ -26,10 +26,14 @@ namespace Marathonrunner.Controllers
         public async Task<IActionResult> Index()
         {
 
-            IEnumerable<Races> races = await _raceRepository.GetAll();
+                IEnumerable<Races> races = await _raceRepository.GetAll();
 
-            return View(races);
+                return View(races);
+            
+
+
         }
+
 
 
         public async Task<IActionResult> Details(int id)
@@ -61,8 +65,8 @@ namespace Marathonrunner.Controllers
                     Title = raceVM.Title,
                     Description = raceVM.Description,
                     Image = result.Url.ToString(),
-                    //userId = raceVM.userId,
-                    raceCategory = raceVM.raceCategory,
+                    userId = raceVM.userId,
+                    RaceCategory = raceVM.RaceCategory,
                     Address = new Address
                     {
                         city = raceVM.Address.city,
@@ -84,95 +88,79 @@ namespace Marathonrunner.Controllers
 
         }
 
+        [HttpGet]
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id , int addressId)
         {
-            Debug.WriteLine("1");
+            var club = await _raceRepository.GetByIdAsync(id);
 
-            var race = await _raceRepository.GetByIdAsync(id);
-
-            if (race == null)
+            if (club == null)
             {
                 return View("Error");
             }
 
-            Debug.WriteLine("2");
-
-            var raceVM = new EditRaceViewModel
+            var editraceVM = new EditRaceViewModel
             {
+                Id = club.Id,
+                Title = club.Title,
+                Description = club.Description,
+                AddressId = addressId,
+                Address = club.Address,
+                URL = club.Image,
+                RaceCategory = club.RaceCategory,
+                userId = club.userId,
 
-                Title = race.Title,
-                Description = race.Description,
-                AddressId = race.AddressId,
-                userId = race.userId,
-                Address = race.Address,
-                URL = race.Image,
-                RaceCategory = race.raceCategory
             };
-            Debug.WriteLine("3");
-
-
-            return View(raceVM);
+            return View(editraceVM);
         }
 
 
        [HttpPost]
-        public async Task<IActionResult> Edit(int id, EditRaceViewModel raceVM)
+        public async Task<IActionResult> Edit(int id, int addressId , EditRaceViewModel raceVM)
         {
-            Debug.WriteLine("4");
 
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to Edit Race");
+                ModelState.AddModelError("", "Failed to edit club");
                 return View("Edit", raceVM);
-
             }
-            Debug.WriteLine("5");
 
 
-            var userRace = await _raceRepository.GetByIdAsyncNoTracking(id);
+            var userRaces = await _raceRepository.GetByIdAsyncNoTracking(id);
 
-            if (userRace != null)
+            if (userRaces != null)
             {
-                Debug.WriteLine("6");
-
                 try
                 {
-                    await _photoService.DeleteImageAsync(userRace.Image);
-
+                    await _photoService.DeleteImageAsync(userRaces.Image);
                 }
-
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Could not delete Photo" + ex);
-                    return View(raceVM);
+                    ModelState.AddModelError("", "Could not delete Image");
+
+                    return View("Edit", raceVM);
                 }
 
-                var photoResult = await _photoService.UploadImageAsync(raceVM.Image);
+                var photoresult = await _photoService.UploadImageAsync(raceVM.Image);
 
                 var race = new Races
                 {
-                    Id = id,
+                    Id = raceVM.Id,
                     Title = raceVM.Title,
                     Description = raceVM.Description,
-                    Image = photoResult.Url.ToString(),
-                    AddressId = (int)(raceVM.AddressId),
+                    Image = photoresult.Url.ToString(),
                     Address = raceVM.Address,
+                    AddressId = addressId,
                     userId = raceVM.userId
                 };
 
-                Debug.WriteLine("7");
-
                 _raceRepository.UpdateRace(race);
+
                 return RedirectToAction("Index", "Dashboard");
             }
 
-
             else
-                Debug.WriteLine("8");
-
             {
-                TempData["RaceEditError"] = "Cannot Edit Race , Please try Again";
                 return View(raceVM);
             }
         }

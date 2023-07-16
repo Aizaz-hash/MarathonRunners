@@ -11,5 +11,7 @@
 
         public int? Mileage { get; set; }
 
+        public string? ProfileImageUrl { get; set; }
+
     }
 }

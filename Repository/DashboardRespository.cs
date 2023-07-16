@@ -30,5 +30,40 @@ namespace Marathonrunner.Repository
             var userRaces = _context.races.Where(r => r.Users.Id == curUser);
             return userRaces.ToList();
         }
+
+        public async Task<Users> GetUserById(string id)
+        {
+
+            return await _context.Users.FindAsync(id);
+
+        }   
+        
+        public async Task<Users> GetUserByIdNoTracking(string id)
+        {
+
+            return await _context.Users.Where(u=>u.Id==id).AsNoTracking().FirstOrDefaultAsync();
+
+        }
+
+        public bool UpdateUser(Users users)
+        {
+            _context.Users.Update(users);
+
+            return Save();
+
+
+        }
+
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+
+            return saved > 0 ? true : false;
+
+        }
+
+
+        
     }
 }

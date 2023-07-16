@@ -2,8 +2,14 @@
 ﻿@using Marathonrunner.Data.Enum
 @model EditClubViewModel;   
 <form method="post" asp-action="Edit" enctype="multipart/form-data">
-    <input type="hidden" value="AddressId" id="AddressId" asp-for="AddressId" />
-    <input type="hidden" id="userId" name="userId" asp-for="userId" />
+@*    <input type="hidden" value="AddressId" id="AddressId" asp-for="AddressId" />
+*@@*    @if (TempData["ClubError"] != null)
+    {
+        <div class="col-md-12 alert alert-danger">
+            <span><b>Sorry!</b> - @TempData["Error"]</span>
+        </div>
+    }s*@
+    <input type="hidden" id="userid" name="userid" asp-for="userId" />
 
 
     <div class="form-group">
@@ -11,17 +17,17 @@
         <input asp-for="Title" class="form-control" placeholder="Title">
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-groups
         <label asp-for="Description">Description</label>
         <input asp-for="Description" class="form-control" placeholder="Description">
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="ClubCategory">Club Category</label>
-        <select asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" class="form-control">
+        <label asp-for="clubCategory">Club Category</label>
+        <select asp-for="clubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" class="form-control">
             <option selected="selected" value="">--Select--</option>
         </select>
-        <span asp-validation-for="ClubCategory" class="text-danger"></span>
+        <span asp-validation-for="clubCategory" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Address.street">Street</label>

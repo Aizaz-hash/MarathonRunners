@@ -9,7 +9,11 @@ namespace Marathonrunner.Models
     {
         public int? Pace { get; set; }
         public int? Mileage { get; set; }
+        public string? ProfileImageURL { get; set; } 
 
+        public string ? city { get; set; }
+
+        public string ?state { get; set; }
         [ForeignKey("Address")]
         public int? AddressId { get; set; }
         public Address? Address { get; set; }

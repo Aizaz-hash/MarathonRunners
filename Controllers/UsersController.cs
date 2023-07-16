@@ -29,7 +29,9 @@ namespace Marathonrunner.Controllers
                     Id = user.Id,
                     Username = user.UserName,
                     Pace = user.Pace,
-                    Mileage = user.Mileage
+                    Mileage = user.Mileage,
+                    ProfileImageUrl = user.ProfileImageURL
+                  
                 };
 
                 result.Add(userVM);
@@ -46,7 +48,9 @@ namespace Marathonrunner.Controllers
                 Id = user.Id,
                 Username = user.UserName,
                 Pace = user.Pace,
-                Mileage = user.Mileage
+                Mileage = user.Mileage,
+                ProfileImageUrl = user.ProfileImageURL
+
             };
 
             return View(UserDetailVM);

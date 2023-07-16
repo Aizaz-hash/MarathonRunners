@@ -1,22 +1,27 @@
-﻿using Marathonrunner.Data;
-using Marathonrunner.Models;
-using Marathonrunner.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿    using Marathonrunner.Data;
+    using Marathonrunner.Models;
+    using Marathonrunner.ViewModels;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
 
-namespace Marathonrunner.Controllers
-{
+    namespace Marathonrunner.Controllers
+    {
     public class AccountController : Controller
     {
         private readonly UserManager<Users> _userManager;
-        private readonly SignInManager<Users> _signinManager;
+        private readonly SignInManager<Users> _signInManager;
         private readonly DataContext _context;
-        public AccountController(UserManager<Users> userManager , SignInManager<Users> signinManager , DataContext context)
+
+        public AccountController(UserManager<Users> userManager,
+            SignInManager<Users> signInManager,
+            DataContext context)
         {
-            _userManager = userManager;
-            _signinManager = signinManager;
             _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
+
+        [HttpGet]
         public IActionResult Login()
         {
             var response = new LoginViewModel();
@@ -24,42 +29,32 @@ namespace Marathonrunner.Controllers
         }
 
         [HttpPost]
-        public async Task< IActionResult> Login(LoginViewModel loginVM) 
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(loginVM);
-            }
+            if (!ModelState.IsValid) return View(loginViewModel);
 
-            var user = await _userManager.FindByEmailAsync(loginVM.Email);
+            var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
 
-            //successfull scenrio
             if (user != null)
             {
-                var password = await _userManager.CheckPasswordAsync(user, loginVM.Password);
-
-                if (password)
+                //User is found, check password
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
+                if (passwordCheck)
                 {
-                    //pasword correct
-                    var result = await _signinManager.PasswordSignInAsync(user, loginVM.Password, false, false);
-
+                    //Password correct, sign in
+                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Race");
                     }
                 }
-
-
-                //password is incorrect
-                TempData["Error"] = "Wrong Credentails , Please try Again";
-
-                return View(loginVM);
+                //Password is incorrect
+                TempData["Error"] = "Wrong credentials. Please try again";
+                return View(loginViewModel);
             }
-            //unseuccessful scenrio
-            TempData["Error"] = "Wrong Credentails , Please try Again";
-
-            return View(loginVM);
-
+            //User not found
+            TempData["Error"] = "Wrong credentials. Please try again";
+            return View(loginViewModel);
         }
 
         [HttpGet]
@@ -81,27 +76,52 @@ namespace Marathonrunner.Controllers
                 return View(registerViewModel);
             }
 
-            var newUser = new Users()
+            var newUser = new Users
             {
                 Email = registerViewModel.Email,
-                UserName = registerViewModel.Email
+                UserName = registerViewModel.Email,
+                city = registerViewModel.city,
+                state=registerViewModel.state
+                
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
-            {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
 
-            }
-
-            return RedirectToAction("Index", "Race");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await _signinManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Race");
         }
+
+        [HttpGet]
+        [Route("Account/Welcome")]
+        public async Task<IActionResult> Welcome(int page = 0)
+        {
+            if (page == 0)
+            {
+                return View();
+            }
+            return View();
+
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetLocation(string location)
+        //{
+        //    if (location == null)
+        //    {
+        //        return Json("Not found");
+        //    }
+        //    var locationResult = await _locationService.GetLocationSearch(location);
+        //    return Json(locationResult);
+        //}
+
+
     }
 }

@@ -46,7 +46,7 @@ namespace Marathonrunner.Repository
 
         public async Task<IEnumerable<Races>> GetRaceByCategory(string category)
         {
-            return await _context.races.Where(r=>r.raceCategory.Equals(category)).ToListAsync();
+            return await _context.races.Where(r=>r.RaceCategory.Equals(category)).ToListAsync();
         }
 
         public async Task<IEnumerable<Races>> GetRaceByCity(string city)

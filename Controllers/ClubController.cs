@@ -20,6 +20,7 @@ namespace Marathonrunner.Controllers
             _clubRepository = clubRepository;
             _photoService = photoService;
             _httpContextAccessor = httpContextAccessor;
+
         }
 
         public async Task<IActionResult> Index()
@@ -31,7 +32,7 @@ namespace Marathonrunner.Controllers
         }
 
 
-        public async Task<IActionResult> Details(int id) 
+        public async Task<IActionResult> Details(int id ) 
         {
             Club club = await _clubRepository.GetByIdAsync(id);
 
@@ -61,7 +62,7 @@ namespace Marathonrunner.Controllers
                     Description = clubVM.Description,
                     Image = result.Url.ToString(),
                     userId = clubVM.userId,
-                    clubCategory = clubVM.clubCategory,
+                    ClubCategory = clubVM.ClubCategory,
                     Address = new Address
                     {
                         city = clubVM.Address.city,
@@ -83,7 +84,8 @@ namespace Marathonrunner.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id, int addressId)
         {
             var club = await _clubRepository.GetByIdAsync(id);
 
@@ -92,68 +94,67 @@ namespace Marathonrunner.Controllers
                 return View("Error");
             }
 
-
-            var ClubVM = new EditClubViewModel
+            var clubVM = new EditClubViewModel
             {
+                Id = club.Id,
                 Title = club.Title,
                 Description = club.Description,
-                AddressId = club.AddressId,
-                userId = club.userId,
+                AddressId = addressId,
                 Address = club.Address,
                 URL = club.Image,
-                ClubCategory = club.clubCategory
+                clubCategory = club.ClubCategory,
+                userId=club.userId,
+                
             };
-
-            return View(ClubVM);
-
+            return View(clubVM);
         }
 
-        [HttpPost]
-
-        public async Task<IActionResult> Edit(int id , EditClubViewModel clubVM)
+       [HttpPost]
+        public async Task<IActionResult> Edit(int id, int addressId, EditClubViewModel clubVM)
         {
+
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to Edit Race");
+                ModelState.AddModelError("", "Failed to edit club");
                 return View("Edit", clubVM);
             }
 
-            var userclub = await _clubRepository.GetByIdAsyncNoTracking(id);
 
-            if (userclub != null)
+            var userClub = await _clubRepository.GetByIdAsyncNoTracking(id);
+
+            if (userClub!=null)
             {
                 try
                 {
-                    await _photoService.DeleteImageAsync(userclub.Image);
-
+                    await _photoService.DeleteImageAsync(userClub.Image);
                 }
-
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Could not delete Photo" + ex);
-                    return View(clubVM);
+                    ModelState.AddModelError("", "Could not delete Image");
+
+                    return View("Edit" , clubVM);
                 }
 
-                var photoResult = await _photoService.UploadImageAsync(clubVM.Image);
+                var photoresult = await _photoService.UploadImageAsync(clubVM.Image);
 
                 var club = new Club
                 {
-                    Id = id,
+                    Id = clubVM.Id,
                     Title = clubVM.Title,
                     Description = clubVM.Description,
-                    Image = photoResult.Url.ToString(),
-                    AddressId = Int32.Parse(clubVM.AddressId.ToString()),
-                    //(int)clubVM.AddressId,
+                    Image = photoresult.Url.ToString(),
                     Address = clubVM.Address,
-                    userId = clubVM.userId
+                    AddressId = addressId,
+                    userId=clubVM.userId
                 };
 
                 _clubRepository.UpdateClub(club);
+
                 return RedirectToAction("Index", "Dashboard");
             }
+
             else
             {
-                TempData["RaceEditError"] = "Cannot Edit Race , Please try Again";
                 return View(clubVM);
             }
         }

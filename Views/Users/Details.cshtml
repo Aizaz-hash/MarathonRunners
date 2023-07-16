@@ -1,7 +1,7 @@
 ﻿@using Marathonrunner.ViewModels;
 @model UserDetailedViewModel
 
-<div class="main-container">
+@*<div class="main-container">
     <nav aria-label="breadcrumb" role="navigation" class="bg-primary text-white">
         <div class="container">
             <div class="row justify-content-center">
@@ -22,31 +22,31 @@
             <!--end of row-->
         </div>
         <!--end of container-->
-    </nav>
+    </nav>*@
     <section class="bg-white">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-8">
                     <div class="media">
-@*                        <img alt="Image" src="@Model.ProfileImageUrl" class="mr-md-5 avatar avatar-xlg">
-*@                        <div class="media-body">
+                    <img alt="Image" src="@Model.ProfileImageUrl" width="150px" height="150px" alt="Card image cap" class="mr-md-5 avatar avatar-xlg">
+                       <div class="media-body">
                             <div class="mb-3">
                                 <h1 class="h2 mb-2">@Model.Username</h1>
 @*                                <span class="text-muted"><i class="icon-location"></i>@Model.Location</span>
 *@                            </div>
                             <p class="text-muted">Pace: @Model.Pace</p>
                             <p class="text-muted">Mileage: @Model.Mileage</p>
-                            <p>
+@*                            <p>
                                 Bit of a go-getter me, creating lovely things that help others. You'll most often find me out back in the hammock, listening to tunes and bending pixels to my will.
-                            </p>
-                            <div>
+                            </p>*@
+                        @*<div>
                                 <button class="btn btn-outline-primary" data-toggle="button"><i class="icon-add-user"></i> Follow</button>
                                 <button class="btn btn-outline-primary">
-                                    <i class="icon-mail"></i>
+                                    <i class="icon-mail">...</i>
                                 </button>
                                 <div class="dropdown d-inline-block">
                                     <button class="btn btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-dots-three-horizontal"></i>
+                                        <i class="icon-dots-three-horizontal">More</i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 36px, 0px);">
                                         <a class="dropdown-item" href="#">Add to group</a>
@@ -56,7 +56,7 @@
                                         <a class="dropdown-item" href="#">Report</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
         <!--end of container-->
     </section>
     <!--end of section-->
-    <section class="flush-with-above space-0">
+   @* <section class="flush-with-above space-0">
         <div class="bg-white">
             <div class="container">
                 <div class="row">
@@ -904,4 +904,4 @@
         </div>
         <!--end of container-->
     </footer>
-</div>
+</div>*@
